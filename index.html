@@ -1,0 +1,1553 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI-Based Wifi Evil Twin Detection System</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Orbitron:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        scroll-behavior: smooth;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+
+        50% {
+          box-shadow: 0 0 40px rgba(0, 255, 204, 0.6);
+        }
+      }
+
+      @keyframes scan-line {
+        0% {
+          transform: translateY(-100%);
+        }
+
+        100% {
+          transform: translateY(100%);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes radar-sweep {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes threat-blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .animate-pulse-glow {
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .animate-radar {
+        animation: radar-sweep 4s linear infinite;
+      }
+
+      .animate-threat {
+        animation: threat-blink 1s ease-in-out infinite;
+      }
+
+      .glass-card {
+        background: rgba(15, 25, 35, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 255, 204, 0.2);
+      }
+
+      .gradient-text {
+        background: linear-gradient(
+          135deg,
+          #00ffcc 0%,
+          #00a8ff 50%,
+          #7c3aed 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .cyber-grid {
+        background-image:
+          linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
+    </style>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  </head>
+
+  <body
+    class="h-full overflow-auto bg-slate-950 text-white"
+    style="font-family: &quot;Space Grotesk&quot;, sans-serif"
+  >
+    <div class="min-h-full cyber-grid">
+      <!-- Animated Background Elements -->
+      <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div
+          class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute bottom-20 right-10 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute top-1/2 left-1/2 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"
+        ></div>
+      </div>
+      <!-- Navigation -->
+      <nav
+        class="relative z-10 flex justify-between items-center px-6 md:px-12 py-5"
+      >
+        <div class="flex items-center gap-3">
+          <div class="relative w-10 h-10">
+            <svg viewbox="0 0 40 40" class="w-full h-full">
+              <circle
+                cx="20"
+                cy="20"
+                r="18"
+                fill="none"
+                stroke="url(#navGrad)"
+                stroke-width="2"
+                opacity="0.5"
+              />
+              <circle
+                cx="20"
+                cy="20"
+                r="12"
+                fill="none"
+                stroke="#00ffcc"
+                stroke-width="2"
+                class="animate-radar"
+                style="transform-origin: center"
+              />
+              <circle cx="20" cy="20" r="3" fill="#00ffcc" />
+              <defs>
+                <lineargradient
+                  id="navGrad"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stop-color="#00ffcc" />
+                  <stop offset="100%" stop-color="#7c3aed" />
+                </lineargradient>
+              </defs>
+            </svg>
+          </div>
+          <span
+            class="text-xl font-bold tracking-tight"
+            style="font-family: &quot;Orbitron&quot;, sans-serif"
+          >
+            <span class="text-cyan-400">Evil</span
+            ><span class="text-white">Twin</span
+            ><span class="text-violet-400">AI</span>
+          </span>
+        </div>
+        <ul class="hidden md:flex items-center gap-8 text-sm font-medium">
+          <li
+            class="cursor-pointer hover:text-cyan-400 transition-colors relative group"
+          >
+            <a href="#home">Home</a>
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 transition-all group-hover:w-full"
+            ></span>
+          </li>
+          <li
+            class="cursor-pointer hover:text-cyan-400 transition-colors relative group"
+          >
+            <a href="#features">Features</a>
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 transition-all group-hover:w-full"
+            ></span>
+          </li>
+          <li
+            class="cursor-pointer hover:text-cyan-400 transition-colors relative group"
+          >
+            <a href="#analytics">Analytics</a>
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 transition-all group-hover:w-full"
+            ></span>
+          </li>
+          <!-- <li class="cursor-pointer hover:text-cyan-400 transition-colors relative group"><a href="#contact">Contact</a> <span
+            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 transition-all group-hover:w-full"></span></li> -->
+        </ul>
+        <button class="md:hidden text-cyan-400">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewbox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
+      </nav>
+      <!-- Hero Section -->
+      <section class="relative z-10 text-center px-6 py-16 md:py-24" id="home">
+        <div class="animate-float">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6"
+          >
+            <span
+              class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"
+            ></span>
+            <span class="text-xs font-medium text-emerald-400"
+              >System Active • Real-time Protection</span
+            >
+          </div>
+        </div>
+        <h1
+          id="main-title"
+          class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-text leading-tight"
+          style="font-family: &quot;Orbitron&quot;, sans-serif"
+        >
+          AI-Based Wifi Evil Twin<br />
+          Detection System
+        </h1>
+        <p
+          id="subtitle"
+          class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+        >
+          Protect your Wi-Fi network from rogue access points and cyber threats
+          using advanced Artificial Intelligence detection algorithms.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            id="start-btn"
+            class="group px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-900 font-bold text-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/30 animate-pulse-glow"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              Start Network Scan
+            </span>
+          </button>
+          <button
+            id="export-btn"
+            onclick="exportToExcel()"
+            class="group px-8 py-4 rounded-xl glass-card border border-emerald-500/40 text-emerald-400 font-bold text-lg transition-all hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-400/70 hover:bg-emerald-500/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+            title="Export scan results to Excel"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              </svg>
+              Export Excel
+            </span>
+          </button>
+        </div>
+        <!-- Radar Animation -->
+        <div class="mt-16 flex justify-center">
+          <div id="radar-container" class="relative w-64 h-64 md:w-80 md:h-80">
+            <svg viewbox="0 0 200 200" class="w-full h-full">
+              <defs>
+                <radialgradient id="radarGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#00ffcc" stop-opacity="0" />
+                </radialgradient>
+              </defs>
+              <circle
+                cx="100"
+                cy="100"
+                r="90"
+                fill="none"
+                stroke="#1e3a5f"
+                stroke-width="1"
+              />
+              <circle
+                cx="100"
+                cy="100"
+                r="60"
+                fill="none"
+                stroke="#1e3a5f"
+                stroke-width="1"
+              />
+              <circle
+                cx="100"
+                cy="100"
+                r="30"
+                fill="none"
+                stroke="#1e3a5f"
+                stroke-width="1"
+              />
+              <line
+                x1="100"
+                y1="10"
+                x2="100"
+                y2="190"
+                stroke="#1e3a5f"
+                stroke-width="1"
+              />
+              <line
+                x1="10"
+                y1="100"
+                x2="190"
+                y2="100"
+                stroke="#1e3a5f"
+                stroke-width="1"
+              />
+              <g class="animate-radar" style="transform-origin: 100px 100px">
+                <path
+                  d="M100 100 L100 10 A90 90 0 0 1 163.64 36.36 Z"
+                  fill="url(#radarGrad)"
+                />
+                <line
+                  x1="100"
+                  y1="100"
+                  x2="100"
+                  y2="10"
+                  stroke="#00ffcc"
+                  stroke-width="2"
+                  opacity="0.8"
+                />
+              </g>
+              <circle cx="100" cy="100" r="4" fill="#00ffcc" /></svg
+            ><!-- Network Dots -->
+            <div id="network-dots" class="absolute inset-0">
+              <div
+                class="absolute w-3 h-3 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50"
+                style="top: 25%; left: 30%"
+              ></div>
+              <div
+                class="absolute w-3 h-3 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50"
+                style="top: 60%; left: 70%"
+              ></div>
+              <div
+                class="absolute w-3 h-3 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50"
+                style="top: 40%; left: 55%"
+              ></div>
+              <div
+                id="threat-dot"
+                class="absolute w-4 h-4 rounded-full bg-red-500 shadow-lg shadow-red-500/50 animate-threat hidden"
+                style="top: 35%; left: 75%"
+              >
+                <span
+                  class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-red-400 whitespace-nowrap font-semibold"
+                  >THREAT</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Analytics Cards -->
+      <section class="relative z-10 px-6 py-16" id="analytics">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div
+            class="glass-card rounded-2xl p-8 text-center transition-all hover:scale-105 hover:border-cyan-400/50"
+          >
+            <div
+              class="text-5xl font-bold gradient-text mb-2"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+              id="accuracy-stat"
+            >
+              98%
+            </div>
+            <p class="text-slate-400">Detection Accuracy</p>
+            <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div
+                class="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full transition-all duration-1000"
+                style="width: 98%"
+              ></div>
+            </div>
+          </div>
+          <div
+            class="glass-card rounded-2xl p-8 text-center transition-all hover:scale-105 hover:border-violet-400/50"
+          >
+            <div
+              class="text-5xl font-bold text-violet-400 mb-2"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+              id="threats-stat"
+            >
+              250+
+            </div>
+            <p class="text-slate-400">Threats Detected</p>
+            <div class="mt-4 flex justify-center gap-1">
+              <span class="w-2 h-8 bg-violet-500/30 rounded-full"></span>
+              <span class="w-2 h-12 bg-violet-500/50 rounded-full"></span>
+              <span class="w-2 h-10 bg-violet-500/70 rounded-full"></span>
+              <span class="w-2 h-14 bg-violet-500 rounded-full"></span>
+              <span class="w-2 h-8 bg-violet-500/30 rounded-full"></span>
+            </div>
+          </div>
+          <div
+            class="glass-card rounded-2xl p-8 text-center transition-all hover:scale-105 hover:border-emerald-400/50"
+          >
+            <div
+              class="text-5xl font-bold text-emerald-400 mb-2"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+            >
+              24/7
+            </div>
+            <p class="text-slate-400">Real-Time Monitoring</p>
+            <div class="mt-4 flex justify-center items-center gap-2">
+              <span
+                class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"
+              ></span>
+              <span class="text-xs text-emerald-400 font-medium">LIVE</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Features Section -->
+      <section class="relative z-10 px-6 py-16" id="features">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-center mb-4 gradient-text"
+          style="font-family: &quot;Orbitron&quot;, sans-serif"
+        >
+          System Features
+        </h2>
+        <p class="text-slate-400 text-center mb-12 max-w-xl mx-auto">
+          Advanced protection powered by cutting-edge AI technology
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div
+            class="group glass-card rounded-2xl p-8 transition-all hover:border-cyan-400/50 hover:bg-cyan-500/5"
+          >
+            <div
+              class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg
+                class="w-7 h-7 text-cyan-400"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors"
+            >
+              AI Threat Analysis
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Machine learning based detection of fake Wi-Fi networks using
+              neural network classification.
+            </p>
+          </div>
+          <div
+            class="group glass-card rounded-2xl p-8 transition-all hover:border-violet-400/50 hover:bg-violet-500/5"
+          >
+            <div
+              class="w-14 h-14 rounded-xl bg-gradient-to-br from-violet-500/20 to-violet-500/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg
+                class="w-7 h-7 text-violet-400"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-bold mb-3 text-white group-hover:text-violet-400 transition-colors"
+            >
+              Signal Pattern Matching
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Analyzes SSID &amp; MAC address variations for anomalies with
+              99.2% pattern recognition.
+            </p>
+          </div>
+          <div
+            class="group glass-card rounded-2xl p-8 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/5"
+          >
+            <div
+              class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg
+                class="w-7 h-7 text-emerald-400"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-bold mb-3 text-white group-hover:text-emerald-400 transition-colors"
+            >
+              Instant Alerts
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Immediate notification system for suspicious activity with
+              sub-second response time.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- How It Works -->
+      <section class="relative z-10 px-6 py-16">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-center mb-4 gradient-text"
+          style="font-family: &quot;Orbitron&quot;, sans-serif"
+        >
+          How It Works
+        </h2>
+        <p class="text-slate-400 text-center mb-12 max-w-xl mx-auto">
+          Four simple steps to complete network protection
+        </p>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
+        >
+          <!-- Step 1: Scan -->
+          <div
+            class="relative glass-card rounded-2xl p-6 text-center group hover:border-cyan-400/50 transition-all"
+          >
+            <div
+              class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500 flex items-center justify-center font-bold text-slate-900"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+            >
+              1
+            </div>
+            <div class="mt-4">
+              <svg
+                class="w-12 h-12 mx-auto text-cyan-400 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              <h3 class="text-lg font-bold mb-2">Scan</h3>
+              <p class="text-slate-400 text-sm">
+                Scan nearby Wi-Fi networks in your vicinity
+              </p>
+            </div>
+          </div>
+          <!-- Step 2: Analyze -->
+          <div
+            class="relative glass-card rounded-2xl p-6 text-center group hover:border-violet-400/50 transition-all"
+          >
+            <div
+              class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center font-bold text-white"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+            >
+              2
+            </div>
+            <div class="mt-4">
+              <svg
+                class="w-12 h-12 mx-auto text-violet-400 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+              <h3 class="text-lg font-bold mb-2">Analyze</h3>
+              <p class="text-slate-400 text-sm">
+                AI analyzes network patterns and signatures
+              </p>
+            </div>
+          </div>
+          <!-- Step 3: Detect (clickable) -->
+          <div
+            id="detect-step-card"
+            class="relative glass-card rounded-2xl p-6 text-center group hover:border-amber-400/50 transition-all cursor-pointer hover:bg-amber-500/5"
+            onclick="runDetect()"
+          >
+            <div
+              class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center font-bold text-slate-900"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+            >
+              3
+            </div>
+            <div class="mt-4">
+              <svg
+                class="w-12 h-12 mx-auto text-amber-400 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <h3 class="text-lg font-bold mb-2 group-hover:text-amber-400 transition-colors">Unsafe</h3>
+              <p class="text-slate-400 text-sm">
+                Identify potential evil twin threats
+              </p>
+              <span class="mt-3 inline-block text-xs text-amber-400 border border-amber-400/40 rounded-full px-3 py-1">Click to Detect →</span>
+            </div>
+          </div>
+          <!-- Step 4: Protect (clickable) -->
+          <div
+            id="protect-step-card"
+            class="relative glass-card rounded-2xl p-6 text-center group hover:border-emerald-400/50 transition-all cursor-pointer hover:bg-emerald-500/5"
+            onclick="runProtect()"
+          >
+            <div
+              class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 flex items-center justify-center font-bold text-slate-900"
+              style="font-family: &quot;Orbitron&quot;, sans-serif"
+            >
+              4
+            </div>
+            <div class="mt-4">
+              <svg
+                class="w-12 h-12 mx-auto text-emerald-400 mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              <h3 class="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">Protect</h3>
+              <p class="text-slate-400 text-sm">
+                Block threats and secure your connection
+              </p>
+              <span class="mt-3 inline-block text-xs text-emerald-400 border border-emerald-400/40 rounded-full px-3 py-1">Click to Protect →</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Detect Section -->
+      <section id="detect-section" class="relative z-10 px-6 pb-10 hidden">
+        <div class="max-w-6xl mx-auto">
+          <div class="glass-card rounded-2xl p-8 border border-amber-500/30">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></div>
+                <h3
+                  class="text-2xl font-bold text-amber-400"
+                  style="font-family: &quot;Orbitron&quot;, sans-serif"
+                >
+                  Unsafe Networks
+                </h3>
+              </div>
+              <div class="flex items-center gap-3">
+                <span id="detect-count" class="text-sm text-slate-400">0 threats found</span>
+                <button
+                  onclick="document.getElementById('detect-section').classList.add('hidden')"
+                  class="text-slate-400 hover:text-white transition-colors"
+                >
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div id="detect-no-scan" class="hidden text-center py-10">
+              <svg class="w-14 h-14 mx-auto text-amber-400/40 mb-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <p class="text-slate-400 text-lg font-medium">No scan data available.</p>
+              <p class="text-slate-500 text-sm mt-1">Please run a <strong class="text-cyan-400">Network Scan</strong> first, then click Detect.</p>
+            </div>
+            <div id="detect-table-wrap" class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-amber-500/30">
+                    <th class="text-left py-3 px-4 text-amber-400 font-semibold">SSID</th>
+                    <th class="text-left py-3 px-4 text-amber-400 font-semibold">MAC Address</th>
+                    <th class="text-center py-3 px-4 text-amber-400 font-semibold">Channel</th>
+                    <th class="text-center py-3 px-4 text-amber-400 font-semibold">Signal (dBm)</th>
+                    <th class="text-center py-3 px-4 text-amber-400 font-semibold">Variance</th>
+                    <th class="text-center py-3 px-4 text-amber-400 font-semibold">Beacon Int</th>
+                    <th class="text-center py-3 px-4 text-amber-400 font-semibold">Prediction</th>
+                    <th class="text-center py-3 px-4 text-amber-400 font-semibold">Confidence</th>
+                  </tr>
+                </thead>
+                <tbody id="detect-table-body"></tbody>
+              </table>
+              <div id="detect-empty" class="hidden text-center py-8 text-emerald-400 font-medium">
+                ✅ No evil twin threats detected in the last scan.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Protect Section -->
+      <section id="protect-section" class="relative z-10 px-6 pb-10 hidden">
+        <div class="max-w-6xl mx-auto">
+          <div class="glass-card rounded-2xl p-8 border border-emerald-500/30">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+                <h3
+                  class="text-2xl font-bold text-emerald-400"
+                  style="font-family: &quot;Orbitron&quot;, sans-serif"
+                >
+                  Protected Networks
+                </h3>
+              </div>
+              <div class="flex items-center gap-3">
+                <span id="protect-count" class="text-sm text-slate-400">0 networks secured</span>
+                <button
+                  onclick="document.getElementById('protect-section').classList.add('hidden')"
+                  class="text-slate-400 hover:text-white transition-colors"
+                >
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div id="protect-no-scan" class="hidden text-center py-10">
+              <svg class="w-14 h-14 mx-auto text-emerald-400/40 mb-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <p class="text-slate-400 text-lg font-medium">No scan data available.</p>
+              <p class="text-slate-500 text-sm mt-1">Please run a <strong class="text-cyan-400">Network Scan</strong> first, then click Protect.</p>
+            </div>
+            <div id="protect-table-wrap" class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-emerald-500/30">
+                    <th class="text-left py-3 px-4 text-emerald-400 font-semibold">SSID</th>
+                    <th class="text-left py-3 px-4 text-emerald-400 font-semibold">MAC Address</th>
+                    <th class="text-center py-3 px-4 text-emerald-400 font-semibold">Channel</th>
+                    <th class="text-center py-3 px-4 text-emerald-400 font-semibold">Signal (dBm)</th>
+                    <th class="text-center py-3 px-4 text-emerald-400 font-semibold">Variance</th>
+                    <th class="text-center py-3 px-4 text-emerald-400 font-semibold">Beacon Int</th>
+                    <th class="text-center py-3 px-4 text-emerald-400 font-semibold">Status</th>
+                    <th class="text-center py-3 px-4 text-emerald-400 font-semibold">Confidence</th>
+                  </tr>
+                </thead>
+                <tbody id="protect-table-body"></tbody>
+              </table>
+              <div id="protect-empty" class="hidden text-center py-8 text-amber-400 font-medium">
+                ⚠️ No safe networks found — all detected networks are flagged as threats.
+              </div>
+            </div>
+            <!-- Protection summary banner -->
+            <div id="protect-summary" class="hidden mt-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3">
+              <svg class="w-6 h-6 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span id="protect-summary-text" class="text-emerald-400 font-medium"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Scan Results Panel -->
+      <section id="scan-section" class="relative z-10 px-6 py-16 hidden">
+        <div class="max-w-6xl mx-auto">
+          <div class="glass-card rounded-2xl p-8">
+            <div class="flex items-center justify-between mb-6">
+              <h3
+                class="text-2xl font-bold gradient-text"
+                style="font-family: &quot;Orbitron&quot;, sans-serif"
+              >
+                Network Scan Results
+              </h3>
+              <div class="flex items-center gap-3">
+                <button
+                  id="rescan-btn"
+                  onclick="startScan()"
+                  class="flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 text-sm font-semibold hover:bg-cyan-500/20 hover:border-cyan-400/70 transition-all"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Scan Again
+                </button>
+                <button
+                  id="close-scan"
+                  class="text-slate-400 hover:text-white transition-colors"
+                >
+                  <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewbox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <!-- Scan Status -->
+            <div id="scan-status" class="mb-6">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-4 h-4 rounded-full bg-cyan-400 animate-pulse"
+                  ></div>
+                  <span class="text-cyan-400 font-medium"
+                    >Scanning networks...</span
+                  >
+                </div>
+                <span id="network-count" class="text-sm text-slate-400"
+                  >0 networks detected</span
+                >
+              </div>
+              <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  id="scan-progress"
+                  class="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full transition-all duration-300"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+            <!-- Network Details Table -->
+            <div class="overflow-x-auto mb-6">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-slate-700">
+                    <th class="text-left py-3 px-4 text-cyan-400 font-semibold">
+                      SSID
+                    </th>
+                    <th class="text-left py-3 px-4 text-cyan-400 font-semibold">
+                      MAC Address
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Channel
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Signal (dBm)
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Variance
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Beacon Int
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Beacons
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Frames
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Prediction
+                    </th>
+                    <th
+                      class="text-center py-3 px-4 text-cyan-400 font-semibold"
+                    >
+                      Confidence
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="network-table-body">
+                  <!-- Networks will be populated here -->
+                </tbody>
+              </table>
+            </div>
+            <!-- Status Messages -->
+            <div
+              id="scan-complete"
+              class="hidden mt-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30"
+            >
+              <div class="flex items-center gap-3">
+                <svg
+                  class="w-6 h-6 text-emerald-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewbox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  /></svg
+                ><span
+                  class="text-emerald-400 font-medium"
+                  id="scan-result-text"
+                  >Scan complete.</span
+                >
+              </div>
+            </div>
+            <div
+              id="threat-alert"
+              class="hidden mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30"
+            >
+              <div class="flex items-center gap-3">
+                <svg
+                  class="w-6 h-6 text-red-400 animate-threat"
+                  fill="none"
+                  stroke="currentColor"
+                  viewbox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  /></svg
+                ><span class="text-red-400 font-medium"
+                  >EVIL TWINS DETECTED!</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Footer -->
+      <footer class="relative z-10 px-6 py-12 mt-16 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto">
+          <div
+            class="flex flex-col md:flex-row justify-between items-center gap-6"
+          >
+            <div class="flex items-center gap-3">
+              <span
+                class="text-lg font-bold"
+                style="font-family: &quot;Orbitron&quot;, sans-serif"
+              >
+                <span class="text-cyan-400">Evil</span
+                ><span class="text-white">Twin</span
+                ><span class="text-violet-400">AI</span>
+              </span>
+            </div>
+            <p class="text-slate-500 text-sm">
+              Made with Prathap &amp; Sultan Bathusha | &copy; 2026 All rights
+              reserved
+            </p>
+            <div class="flex items-center gap-4">
+              <span
+                class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"
+              ></span>
+              <span class="text-xs text-emerald-400 font-medium"
+                >System Status: Online</span
+              >
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      const defaultConfig = {
+        main_title: "AI-Based Wifi Evil Twin<br/>Detection System",
+        subtitle:
+          "Protect your Wi-Fi network from rogue access points and cyber threats using advanced Artificial Intelligence detection algorithms.",
+        system_title: "Evil Twin Detection System",
+        scan_duration: "30",
+        detection_sensitivity: "0.75",
+        primary_color: "#00ffcc",
+        secondary_color: "#7c3aed",
+        background_color: "#0f172a",
+        text_color: "#94a3b8",
+        accent_color: "#10b981",
+      };
+
+      let allDetections = [];
+      let scannedNetworks = [];
+      let threatCount = 250;
+
+      // Realistic network simulation data
+      class NetworkSimulator {
+        static generateNetworks(count = 15) {
+          const networks = [];
+          const commonSSIDs = [
+            "HomeNetwork_5G",
+            "OfficeWiFi",
+            "CoffeeShop_Free",
+            "GuestNetwork",
+            "PUBLIC_WiFi",
+            "HOME-NETWORK",
+            "TP-Link_Router",
+            "NETGEAR_WiFi",
+            "Virgin_Media",
+            "Sky_WiFi",
+            "BT_WiFi",
+            "Vodafone_Network",
+          ];
+
+          for (let i = 0; i < count; i++) {
+            const ssid =
+              commonSSIDs[Math.floor(Math.random() * commonSSIDs.length)];
+            const isEvil = Math.random() < 0.2; // 20% chance of evil twin
+
+            const channel = [1, 6, 11, 36, 40, 44, 48, 52, 56, 60][
+              Math.floor(Math.random() * 10)
+            ];
+            const avgRssi = isEvil
+              ? Math.round(Math.random() * -30 - 50) // Evil twins: weaker signal
+              : Math.round(Math.random() * -25 - 40); // Legit: stronger
+
+            const variance = isEvil
+              ? Math.random() * 30 + 20
+              : Math.random() * 15 + 5;
+            const beaconInterval = isEvil
+              ? Math.random() * 50 + 80
+              : Math.random() * 20 + 95;
+            const beaconCount = isEvil
+              ? Math.floor(Math.random() * 6 + 4)
+              : Math.floor(Math.random() * 8 + 8);
+            const frameCount = isEvil
+              ? Math.floor(Math.random() * 25 + 15)
+              : Math.floor(Math.random() * 30 + 30);
+
+            const confidence = this.predictEvil(
+              channel,
+              avgRssi,
+              variance,
+              beaconInterval,
+              beaconCount,
+              frameCount,
+              0.75,
+            );
+
+            networks.push({
+              ssid: ssid + (i % 3 === 0 ? "_" + i : ""),
+              mac: this.generateMAC(),
+              channel,
+              avgRssi,
+              variance: Math.round(variance * 100) / 100,
+              beaconInterval: Math.round(beaconInterval * 100) / 100,
+              beaconCount,
+              frameCount,
+              confidence: Math.round(confidence * 10000) / 10000,
+              isEvil: confidence > 0.75,
+            });
+          }
+
+          return networks;
+        }
+
+        static generateMAC() {
+          return Array.from(
+            { length: 6 },
+            () =>
+              Math.floor(Math.random() * 16).toString(16) +
+              Math.floor(Math.random() * 16).toString(16),
+          )
+            .join(":")
+            .toUpperCase();
+        }
+
+        static predictEvil(
+          channel,
+          rssi,
+          variance,
+          beaconInt,
+          beaconCount,
+          frameCount,
+          sensitivity,
+        ) {
+          let score = 0;
+
+          // Signal strength: more negative = worse = more likely evil
+          if (rssi < -60) score += 0.25;
+          if (rssi < -70) score += 0.15;
+
+          // Variance: high variance = unstable = more likely evil
+          if (variance > 20) score += 0.25;
+          if (variance > 30) score += 0.15;
+
+          // Beacon interval: deviates from 100ms standard = more likely evil
+          if (Math.abs(beaconInt - 100) > 30) score += 0.2;
+
+          // Beacon count: fewer beacons = more likely evil
+          if (beaconCount < 6) score += 0.15;
+
+          // Frame count: fewer frames = more likely evil
+          if (frameCount < 25) score += 0.1;
+
+          return Math.min(score, 1);
+        }
+      }
+
+      function onConfigChange(config) {
+        const mainTitle = document.getElementById("main-title");
+        const subtitle = document.getElementById("subtitle");
+
+        if (mainTitle)
+          mainTitle.innerHTML = config.main_title || defaultConfig.main_title;
+        if (subtitle)
+          subtitle.textContent = config.subtitle || defaultConfig.subtitle;
+      }
+
+      async function startScan() {
+        const scanSection = document.getElementById("scan-section");
+        const scanProgress = document.getElementById("scan-progress");
+        const tableBody = document.getElementById("network-table-body");
+        const scanStatus = document.getElementById("scan-status");
+        const scanComplete = document.getElementById("scan-complete");
+        const threatAlert = document.getElementById("threat-alert");
+        const networkCount = document.getElementById("network-count");
+
+        scanSection.classList.remove("hidden");
+        scanSection.scrollIntoView({ behavior: "smooth" });
+        scanProgress.style.width = "30%";
+        tableBody.innerHTML = "";
+        scanComplete.classList.add("hidden");
+        threatAlert.classList.add("hidden");
+        scanStatus.classList.remove("hidden");
+
+        try {
+          const backendUrl = "http://127.0.0.1:5000/scan";
+
+          // Verify backend is running with timeout
+          let response;
+          try {
+            response = await Promise.race([
+              fetch(backendUrl),
+              new Promise((_, reject) =>
+                setTimeout(() => reject(new Error("Backend timeout")), 10000),
+              ),
+            ]);
+          } catch (timeoutError) {
+            alert(
+              "⚠️ Backend server is not responding.\nPlease ensure Flask is running:\n\npython app.py",
+            );
+            scanStatus.classList.add("hidden");
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const networks = await response.json();
+          scanProgress.style.width = "80%";
+
+          scannedNetworks = networks;
+          let threatDetected = false;
+
+          networks.forEach((net) => {
+            if (net.isEvil) threatDetected = true;
+
+            const row = document.createElement("tr");
+            row.className = net.isEvil
+              ? "border-b border-slate-700 bg-red-500/5"
+              : "border-b border-slate-700 hover:bg-slate-800/30";
+
+            row.innerHTML = `
+        <td class="py-3 px-4 text-white">${net.ssid}</td>
+        <td class="py-3 px-4 text-slate-300 text-xs">${net.mac}</td>
+        <td class="py-3 px-4 text-center text-slate-300">${net.channel}</td>
+        <td class="py-3 px-4 text-center text-slate-300">${net.avgRssi}</td>
+        <td class="py-3 px-4 text-center text-slate-300">${net.variance}</td>
+        <td class="py-3 px-4 text-center text-slate-300">${net.beaconInterval}</td>
+        <td class="py-3 px-4 text-center text-slate-300">${net.beaconCount}</td>
+        <td class="py-3 px-4 text-center text-slate-300">${net.frameCount}</td>
+        <td class="py-3 px-4 text-center">
+          <span class="${net.isEvil ? "text-red-400 font-bold" : "text-emerald-400"}">
+            ${net.isEvil ? "UNSAFE" : "SAFE"}
+          </span>
+        </td>
+        <td class="py-3 px-4 text-center text-slate-300">
+          ${(net.confidence * 100).toFixed(1)}%
+        </td>
+      `;
+
+            tableBody.appendChild(row);
+          });
+
+          networkCount.textContent = networks.length + " networks detected";
+
+          scanProgress.style.width = "100%";
+          scanStatus.classList.add("hidden");
+
+          if (threatDetected) {
+            threatAlert.classList.remove("hidden");
+          } else {
+            scanComplete.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Scan error:", error);
+          alert(
+            "Connection Error: Backend is not accessible!\n\nMake sure Flask is running:\npython app.py",
+          );
+          scanStatus.classList.add("hidden");
+        }
+      }
+
+      // ── Export to Excel ──────────────────────────────────────────────────
+      function exportToExcel() {
+        if (!scannedNetworks || scannedNetworks.length === 0) {
+          alert("⚠️ No scan data to export.\nPlease run a Network Scan first.");
+          return;
+        }
+
+        const now = new Date();
+        const timestamp = now.toLocaleString();
+        const dateStr = now.toISOString().slice(0, 10);
+
+        // Build worksheet rows
+        const rows = scannedNetworks.map(net => ({
+          "SSID":               net.ssid,
+          "MAC Address":        net.mac,
+          "Channel":            net.channel,
+          "Signal (dBm)":       net.avgRssi,
+          "Variance":           net.variance,
+          "Beacon Interval (ms)": net.beaconInterval,
+          "Beacon Count":       net.beaconCount,
+          "Frame Count":        net.frameCount,
+          "Prediction":         net.isEvil ? "THREAT" : "LEGITIMATE",
+          "Confidence (%)":     parseFloat((net.confidence * 100).toFixed(1)),
+          "Scan Timestamp":     timestamp,
+        }));
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(rows);
+
+        // Column widths
+        ws["!cols"] = [
+          { wch: 24 }, { wch: 20 }, { wch: 10 }, { wch: 14 },
+          { wch: 12 }, { wch: 20 }, { wch: 14 }, { wch: 13 },
+          { wch: 14 }, { wch: 16 }, { wch: 22 },
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws, "Scan Results");
+
+        // Summary sheet
+        const threats  = scannedNetworks.filter(n => n.isEvil).length;
+        const legit    = scannedNetworks.length - threats;
+        const summary  = [
+          { "Metric": "Total Networks Scanned", "Value": scannedNetworks.length },
+          { "Metric": "Legitimate Networks",    "Value": legit },
+          { "Metric": "Threats Detected",       "Value": threats },
+          { "Metric": "Export Date/Time",        "Value": timestamp },
+        ];
+        const ws2 = XLSX.utils.json_to_sheet(summary);
+        ws2["!cols"] = [{ wch: 28 }, { wch: 30 }];
+        XLSX.utils.book_append_sheet(wb, ws2, "Summary");
+
+        XLSX.writeFile(wb, `evil_twin_scan_${dateStr}.xlsx`);
+      }
+
+      // ── Detect ──────────────────────────────────────────────────────────
+      function runDetect() {
+        const section = document.getElementById("detect-section");
+        const tbody   = document.getElementById("detect-table-body");
+        const wrap    = document.getElementById("detect-table-wrap");
+        const noScan  = document.getElementById("detect-no-scan");
+        const empty   = document.getElementById("detect-empty");
+        const countEl = document.getElementById("detect-count");
+
+        section.classList.remove("hidden");
+        section.scrollIntoView({ behavior: "smooth" });
+
+        if (!scannedNetworks || scannedNetworks.length === 0) {
+          wrap.classList.add("hidden");
+          noScan.classList.remove("hidden");
+          empty.classList.add("hidden");
+          countEl.textContent = "0 threats found";
+          return;
+        }
+
+        noScan.classList.add("hidden");
+        wrap.classList.remove("hidden");
+        tbody.innerHTML = "";
+
+        const threats = scannedNetworks.filter(n => n.isEvil);
+        countEl.textContent = threats.length + " threat" + (threats.length !== 1 ? "s" : "") + " found";
+
+        if (threats.length === 0) {
+          empty.classList.remove("hidden");
+          return;
+        }
+        empty.classList.add("hidden");
+
+        threats.forEach(net => {
+          const row = document.createElement("tr");
+          row.className = "border-b border-slate-700 bg-red-500/5 animate-threat-row";
+          row.innerHTML = `
+            <td class="py-3 px-4 text-white font-medium">${net.ssid}</td>
+            <td class="py-3 px-4 text-slate-300 text-xs font-mono">${net.mac}</td>
+            <td class="py-3 px-4 text-center text-slate-300">${net.channel}</td>
+            <td class="py-3 px-4 text-center text-red-400 font-semibold">${net.avgRssi}</td>
+            <td class="py-3 px-4 text-center text-slate-300">${net.variance}</td>
+            <td class="py-3 px-4 text-center text-slate-300">${net.beaconInterval}</td>
+            <td class="py-3 px-4 text-center">
+              <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 text-xs font-bold">
+                ⚠ UNSAFE
+              </span>
+            </td>
+            <td class="py-3 px-4 text-center text-red-400 font-semibold">${(net.confidence * 100).toFixed(1)}%</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      // ── Protect ─────────────────────────────────────────────────────────
+      function runProtect() {
+        const section   = document.getElementById("protect-section");
+        const tbody     = document.getElementById("protect-table-body");
+        const wrap      = document.getElementById("protect-table-wrap");
+        const noScan    = document.getElementById("protect-no-scan");
+        const empty     = document.getElementById("protect-empty");
+        const countEl   = document.getElementById("protect-count");
+        const summary   = document.getElementById("protect-summary");
+        const summaryTx = document.getElementById("protect-summary-text");
+
+        section.classList.remove("hidden");
+        section.scrollIntoView({ behavior: "smooth" });
+
+        if (!scannedNetworks || scannedNetworks.length === 0) {
+          wrap.classList.add("hidden");
+          noScan.classList.remove("hidden");
+          empty.classList.add("hidden");
+          summary.classList.add("hidden");
+          countEl.textContent = "0 networks secured";
+          return;
+        }
+
+        noScan.classList.add("hidden");
+        wrap.classList.remove("hidden");
+        tbody.innerHTML = "";
+        summary.classList.add("hidden");
+
+        const safe    = scannedNetworks.filter(n => !n.isEvil);
+        const threats = scannedNetworks.filter(n => n.isEvil);
+        countEl.textContent = safe.length + " network" + (safe.length !== 1 ? "s" : "") + " secured";
+
+        if (safe.length === 0) {
+          empty.classList.remove("hidden");
+          return;
+        }
+        empty.classList.add("hidden");
+
+        safe.forEach(net => {
+          const row = document.createElement("tr");
+          row.className = "border-b border-slate-700 hover:bg-slate-800/30";
+          row.innerHTML = `
+            <td class="py-3 px-4 text-white font-medium">${net.ssid}</td>
+            <td class="py-3 px-4 text-slate-300 text-xs font-mono">${net.mac}</td>
+            <td class="py-3 px-4 text-center text-slate-300">${net.channel}</td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-semibold">${net.avgRssi}</td>
+            <td class="py-3 px-4 text-center text-slate-300">${net.variance}</td>
+            <td class="py-3 px-4 text-center text-slate-300">${net.beaconInterval}</td>
+            <td class="py-3 px-4 text-center">
+              <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold">
+                ✓ SECURED
+              </span>
+            </td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-semibold">${(net.confidence * 100).toFixed(1)}%</td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        // Show summary banner
+        summary.classList.remove("hidden");
+        summaryTx.textContent =
+          `Protection active: ${safe.length} legitimate network${safe.length !== 1 ? "s" : ""} secured` +
+          (threats.length > 0
+            ? ` · ${threats.length} evil twin${threats.length !== 1 ? "s" : ""} blocked`
+            : " · No threats detected");
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        const startBtn = document.getElementById("start-btn");
+        const closeBtn = document.getElementById("close-scan");
+
+        if (startBtn) startBtn.addEventListener("click", startScan);
+        if (closeBtn)
+          closeBtn.addEventListener("click", () => {
+            document.getElementById("scan-section").classList.add("hidden");
+          });
+
+        // Check backend connection on page load
+        checkBackendConnection();
+      });
+
+      // Verify Flask backend is running
+      async function checkBackendConnection() {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/scan", {
+            method: "GET",
+            timeout: 2000,
+          });
+
+          if (response.ok) {
+            console.log("✓ Backend connected successfully");
+          }
+        } catch (error) {
+          console.warn(
+            "Backend not responding. Will retry when scan is clicked.",
+          );
+        }
+      }
+
+      // Element SDK initialization
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () =>
+                  config.background_color || defaultConfig.background_color,
+                set: (value) => {
+                  config.background_color = value;
+                  window.elementSdk.setConfig({ background_color: value });
+                },
+              },
+              {
+                get: () => config.primary_color || defaultConfig.primary_color,
+                set: (value) => {
+                  config.primary_color = value;
+                  window.elementSdk.setConfig({ primary_color: value });
+                },
+              },
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined,
+          }),
+          mapToEditPanelValues: (config) =>
+            new Map([
+              [
+                "system_title",
+                config.system_title || defaultConfig.system_title,
+              ],
+              [
+                "scan_duration",
+                config.scan_duration || defaultConfig.scan_duration,
+              ],
+              [
+                "detection_sensitivity",
+                config.detection_sensitivity ||
+                  defaultConfig.detection_sensitivity,
+              ],
+            ]),
+        });
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9cfd92cf076d29b7',t:'MTc3MTQxODIyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
