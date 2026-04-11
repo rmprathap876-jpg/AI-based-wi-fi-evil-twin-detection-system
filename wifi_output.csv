@@ -1,0 +1,5 @@
+Name,SSID,BSSID,Band,Channel,Network type,Radio type,Authentication,Cipher,Signal
+JioPrivateNet,JioPrivateNet,00:06:ae:d8:ba:f6,2.4 GHz,6,Infrastructure,802.11ac,WPA2-Enterprise,N/A,0%
+Vaishupuni,Vaishupuni,78:4f:24:e4:15:09,2.4 GHz,11,Infrastructure,802.11n,WPA2-Personal,N/A,33%
+,,7a:4f:24:c4:15:0d,5 GHz,161,Infrastructure,802.11ac,WPA2-Personal,N/A,12%
+Nothing phone 3,Nothing phone 3,fe:5e:c6:1e:de:86,2.4 GHz,1,Infrastructure,802.11ax,WPA3-Personal,N/A,84%
